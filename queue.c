@@ -26,16 +26,19 @@ void q_free(queue_t *q)
     list_ele_t *ptr, *tmp;
     tmp = ptr = q->head;
 
+    /* The queue might be empty */
+    if (!ptr) {
+        free(q);
+        return;
+    }
+
     while (ptr->next) {
         ptr = ptr->next;
         free(tmp->value);
         free(tmp);
         tmp = ptr;
     }
-
-    /* The head of queue might be NULL */
-    if (tmp)
-        free(tmp);
+    free(tmp);
 
     /* Free queue structure */
     free(q);
