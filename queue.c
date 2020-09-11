@@ -26,6 +26,7 @@ void q_free(queue_t *q)
 
     while (ptr->next) {
         ptr = ptr->next;
+        free(tmp->value);
         free(tmp);
         tmp = ptr;
     }
