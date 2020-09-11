@@ -16,6 +16,7 @@ queue_t *q_new()
         return NULL;
     q->head = NULL;
     q->tail = NULL;
+    q->size = 0;
     return q;
 }
 
@@ -69,6 +70,7 @@ bool q_insert_head(queue_t *q, char *s)
     strncpy(newh->value, s, strlen(s));
     /* Append the null byte in the end of the string */
     newh->value[strlen(s)] = '\0';
+    q->size++;
 
     /* If the queue is empty, store the new node address in the tail pointer. */
     if (!q->head)
@@ -107,6 +109,7 @@ bool q_insert_tail(queue_t *q, char *s)
     strncpy(newh->value, s, strlen(s));
     /* Append the null byte in the end of the string */
     newh->value[strlen(s)] = '\0';
+    q->size++;
 
     newh->next = NULL;
     if (!q->tail) {
@@ -139,10 +142,7 @@ bool q_remove_head(queue_t *q, char *sp, size_t bufsize)
  */
 int q_size(queue_t *q)
 {
-    /* TODO: You need to write the code for this function */
-    /* Remember: It should operate in O(1) time */
-    /* TODO: Remove the above comment when you are about to implement. */
-    return 0;
+    return q->size;
 }
 
 /*
