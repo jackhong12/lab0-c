@@ -149,6 +149,8 @@ bool q_remove_head(queue_t *q, char *sp, size_t bufsize)
     /* Append null byte */
     sp[bufsize - 1] = '\0';
     /* Free the node */
+    q->size--;
+
     free(tmp->value);
     free(tmp);
     return true;
