@@ -15,6 +15,7 @@ queue_t *q_new()
     if (!q)
         return NULL;
     q->head = NULL;
+    q->tail = NULL;
     return q;
 }
 
@@ -69,6 +70,9 @@ bool q_insert_head(queue_t *q, char *s)
     /* Append the null byte in the end of the string */
     newh->value[strlen(s)] = '\0';
 
+    /* If the queue is empty, store the new node address in the tail pointer. */
+    if (!q->head)
+        q->tail = newh;
     newh->next = q->head;
     q->head = newh;
     return true;
@@ -83,10 +87,34 @@ bool q_insert_head(queue_t *q, char *s)
  */
 bool q_insert_tail(queue_t *q, char *s)
 {
-    /* TODO: You need to write the complete code for this function */
-    /* Remember: It should operate in O(1) time */
-    /* TODO: Remove the above comment when you are about to implement. */
-    return false;
+    list_ele_t *newh;
+    if (!q)
+        return false;
+    newh = malloc(sizeof(list_ele_t));
+    if (!newh)
+        return false;
+
+    newh->value = malloc(sizeof(strlen(s)) + 1);
+    /*
+     * If fail to allocate the space of the string, free the new the node and
+     * return false .
+     */
+    if (!newh->value) {
+        free(newh);
+        return false;
+    }
+    /* Copy the string into the new node */
+    strncpy(newh->value, s, strlen(s));
+    /* Append the null byte in the end of the string */
+    newh->value[strlen(s)] = '\0';
+
+    newh->next = NULL;
+    if (!q->tail) {
+        q->head = newh;
+        q->tail = newh;
+    } else
+        q->tail->next = newh;
+    return true;
 }
 
 /*
