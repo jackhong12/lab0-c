@@ -65,7 +65,7 @@ bool q_insert_head(queue_t *q, char *s)
     if (!newh)
         return false;
 
-    newh->value = malloc(sizeof(strlen(s)) + 1);
+    newh->value = malloc(strlen(s) + 1);
     /*
      * If fail to allocate the space of the string, free the new the node and
      * return false .
@@ -104,7 +104,7 @@ bool q_insert_tail(queue_t *q, char *s)
     if (!newh)
         return false;
 
-    newh->value = malloc(sizeof(strlen(s)) + 1);
+    newh->value = malloc(strlen(s) + 1);
     /*
      * If fail to allocate the space of the string, free the new the node and
      * return false .
