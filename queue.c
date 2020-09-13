@@ -186,6 +186,78 @@ void q_reverse(queue_t *q)
     q->tail = newt;
 }
 
+bool cmp(const char *str1, const char *str2)
+{
+    for (; *str1 && *str2; str1++, str2++) {
+        if (*str1 < *str2)
+            return true;
+        else if (*str1 > *str2)
+            return false;
+    }
+    if (*str1)
+        return false;
+    return true;
+}
+
+list_ele_t *merge(list_ele_t *list1, list_ele_t *list2)
+{
+    /* list might be NULL */
+    if (!list1)
+        return list2;
+    if (!list2)
+        return list1;
+
+    list_ele_t *head = NULL, *tail = NULL;
+    /* find the head of the list */
+    list_ele_t *tmp;
+    if (cmp(list1->value, list2->value)) {
+        tmp = list1;
+        list1 = list1->next;
+    } else {
+        tmp = list2;
+        list2 = list2->next;
+    }
+    head = tail = tmp;
+
+    while (list1 && list2) {
+        if (cmp(list1->value, list2->value)) {
+            tmp = list1;
+            list1 = list1->next;
+        } else {
+            tmp = list2;
+            list2 = list2->next;
+        }
+        tail->next = tmp;
+        tail = tmp;
+    }
+
+    if (list1)
+        tail->next = list1;
+    if (list2)
+        tail->next = list2;
+    return head;
+}
+
+list_ele_t *mergeSort(list_ele_t *list, unsigned int size)
+{
+    if (size < 2)
+        return list;
+
+    unsigned int rsize = size / 2;
+    unsigned int lsize = size - rsize;
+    list_ele_t *rptr, *lptr;
+    rptr = lptr = list;
+    for (int i = 1; i < lsize; i++)
+        rptr = rptr->next;
+    list_ele_t *tmp = rptr;
+    rptr = rptr->next;
+    tmp->next = NULL;
+
+    lptr = mergeSort(lptr, lsize);
+    rptr = mergeSort(rptr, rsize);
+    return merge(lptr, rptr);
+}
+
 /*
  * Sort elements of queue in ascending order
  * No effect if q is NULL or empty. In addition, if q has only one
@@ -193,6 +265,11 @@ void q_reverse(queue_t *q)
  */
 void q_sort(queue_t *q)
 {
-    /* TODO: You need to write the code for this function */
-    /* TODO: Remove the above comment when you are about to implement. */
+    // return;
+    q->head = mergeSort(q->head, q->size);
+    list_ele_t *ptr = q->head;
+    while (ptr->next)
+        ptr = ptr->next;
+    q->tail = ptr;
+    printf("tail: %s\n", q->tail->value);
 }
