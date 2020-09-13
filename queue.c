@@ -58,9 +58,9 @@ void q_free(queue_t *q)
  */
 bool q_insert_head(queue_t *q, char *s)
 {
-    list_ele_t *newh;
     if (!q)
         return false;
+    list_ele_t *newh;
     newh = malloc(sizeof(list_ele_t));
     if (!newh)
         return false;
@@ -97,9 +97,9 @@ bool q_insert_head(queue_t *q, char *s)
  */
 bool q_insert_tail(queue_t *q, char *s)
 {
-    list_ele_t *newh;
     if (!q)
         return false;
+    list_ele_t *newh;
     newh = malloc(sizeof(list_ele_t));
     if (!newh)
         return false;
@@ -130,6 +130,11 @@ bool q_insert_tail(queue_t *q, char *s)
     return true;
 }
 
+size_t min(size_t num1, size_t num2)
+{
+    return num1 < num2 ? num1 : num2;
+}
+
 /*
  * Attempt to remove element from head of queue.
  * Return true if successful.
@@ -140,6 +145,10 @@ bool q_insert_tail(queue_t *q, char *s)
  */
 bool q_remove_head(queue_t *q, char *sp, size_t bufsize)
 {
+    if (!sp)
+        return false;
+    if (!q)
+        return false;
     list_ele_t *tmp = q->head;
     if (!tmp)
         return false;
@@ -149,10 +158,11 @@ bool q_remove_head(queue_t *q, char *sp, size_t bufsize)
     } else
         q->head = tmp->next;
 
+    size_t len = min(bufsize - 1, strlen(tmp->value));
     /* Copy the string to sp */
-    strncpy(sp, tmp->value, bufsize - 1);
+    strncpy(sp, tmp->value, len);
     /* Append null byte */
-    sp[bufsize - 1] = '\0';
+    sp[len] = '\0';
     /* Free the node */
     q->size--;
 
@@ -167,6 +177,8 @@ bool q_remove_head(queue_t *q, char *sp, size_t bufsize)
  */
 int q_size(queue_t *q)
 {
+    if (!q)
+        return 0;
     return q->size;
 }
 
@@ -179,6 +191,8 @@ int q_size(queue_t *q)
  */
 void q_reverse(queue_t *q)
 {
+    if (!q)
+        return;
     list_ele_t *newh = NULL, *newt, *ptr = q->head;
     newt = q->head;
     while (ptr) {
@@ -270,6 +284,9 @@ list_ele_t *mergeSort(list_ele_t *list, unsigned int size)
  */
 void q_sort(queue_t *q)
 {
+    if (!q || !q->head)
+        return;
+
     // return;
     q->head = mergeSort(q->head, q->size);
     list_ele_t *ptr = q->head;
