@@ -23,6 +23,10 @@ queue_t *q_new()
 /* Free all storage used by queue */
 void q_free(queue_t *q)
 {
+    /* Avoid freeing a empty queue. */
+    if (!q)
+        return;
+
     list_ele_t *ptr, *tmp;
     tmp = ptr = q->head;
 
