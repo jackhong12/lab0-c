@@ -38,6 +38,7 @@ void q_free(queue_t *q)
         free(tmp);
         tmp = ptr;
     }
+    free(tmp->value);
     free(tmp);
 
     /* Free queue structure */
